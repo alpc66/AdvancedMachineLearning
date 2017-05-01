@@ -19,6 +19,8 @@ with open('venueToPapers.pkl', 'rb') as f:
     venueToPapers = pickle.load(f)
 with open('paperToCiters.pkl', 'rb') as f:
     paperToCiters = pickle.load(f)
+with open('authorData.pkl', 'rb') as f:
+    authorToPapers = pickle.load(f)
 
 print('Loaded stuff!')
 
@@ -57,12 +59,18 @@ def genFeatureVecs(paperIdx):
 def getFeatures():
     feats = dict()
     count = 0
-    for paperIdx in paperData:
+    for authorIdx in authorToPapers:
         count += 1
-        feats[paperIdx] = list(genFeatureVecs(paperIdx))
-        if count % 100000 == 0:
-            print('Parsed %d papers!' % count)
+        feats[authorIdx] = list(genFeatureVecs(authorIdx))
+        if count % 50000 == 0:
+            print('Parsed %d authors'% count)
     return feats
+    # for paperIdx in paperData:
+    #     count += 1
+    #     feats[paperIdx] = list(genFeatureVecs(paperIdx))
+    #     if count % 100000 == 0:
+    #         print('Parsed %d papers!' % count)
+    # return feats
 
 
 if __name__ == '__main__':

@@ -16,7 +16,10 @@ p_stemmer = PorterStemmer()
 
 
 def getTopics(paperIdx):
-    paperText = preProcess(paperData[paperIdx][0] + ' ' + paperData[paperIdx][5])
+    try:
+        paperText = preProcess(paperData[paperIdx][0] + ' ' + paperData[paperIdx][5])
+    except IndexError:
+        paperText = preProcess(paperData[paperIdx][0])
     return model[paperText]
 
 
@@ -26,7 +29,10 @@ def preProcess(paperText):
     # remove stop words from tokens
     stopped_tokens = [i for i in tokens if not i in en_stop]
     # stem tokens
-    stemmed_tokens = [p_stemmer.stem(i) for i in stopped_tokens]
+    try:
+        stemmed_tokens = [p_stemmer.stem(i) for i in stopped_tokens]
+    except IndexError:
+        stemmed_tokens = tokens
     # add tokens to list
     tokens = filter(lambda x: len(x) > 1, stemmed_tokens)
     return dictionary.doc2bow(tokens)
